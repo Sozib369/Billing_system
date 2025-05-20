@@ -8,11 +8,18 @@ from string import whitespace
 from tkinter import*
 import random
 from tkinter import messagebox
-import random, os
+import random, os,tempfile
 from turtledemo.nim import randomrow
 
 #Function part
 
+def print_bill():
+    if textarea.get(1.0,END)=='\n':
+        messagebox.showerror('Error','Bill is empty')
+    else:
+        file=tempfile.mktemp('.txt')
+        open(file,'w').write(textarea.get(1.0,END))
+        os.startfile(file,'print')
 
 
 
@@ -73,22 +80,22 @@ def bill_area():
             textarea.insert(END,f'\nCustomer Name:{nameEntry.get()}\n')
             textarea.insert(END,f'\nCustomer Phone Number: {phoneEntry.get()}\n')
             textarea.insert(END,'\n-------------------------------------------------------')
-            textarea.insert(END,'Product\t\t\tQuantity\t\t\tPrice')
+            textarea.insert(END,'\nProduct\t\t\tQuantity\t\t  Price')
             textarea.insert(END, '\n-------------------------------------------------------')
 
             #cosmatic item show bill receipt
             if BatchSopEntry.get()!='0':
-                textarea.insert(END,f'\nBat Soap\t\t\t{BatchSopEntry.get()}\t\t\t{soapPrice} BD')
+                textarea.insert(END,f'\nBat Soap\t\t{BatchSopEntry.get()}\t\t\t{soapPrice} BD')
             if FaceCreamEntry.get()!='0':
-                textarea.insert(END,f'\nFace Cream\t\t\t{FaceCreamEntry.get()}\t\t\t{Facecream} BD')
+                textarea.insert(END,f'\nFace Cream\t\t{FaceCreamEntry.get()}\t\t\t{Facecream} BD')
             if FaceWashEntry.get()!='0':
-                textarea.insert(END,f'\nFace Wash\t\t\t{FaceWashEntry.get()}\t\t\t{FaceWash} BD')
+                textarea.insert(END,f'\nFace Wash\t\t{FaceWashEntry.get()}\t\t\t{FaceWash} BD')
             if HairSprayEntry.get()!='0':
-                textarea.insert(END,f'\nHair spary\t\t\t{HairSprayEntry.get()}\t\t\t{HairSpray} BD')
+                textarea.insert(END,f'\nHair spary\t\t{HairSprayEntry.get()}\t\t\t{HairSpray} BD')
             if HairGelEntry.get()!='0':
-                textarea.insert(END,f'\nHair Gel\t\t\t{HairGelEntry.get()}\t\t\t{HairGel} BD')
+                textarea.insert(END,f'\nHair Gel\t\t{HairGelEntry.get()}\t\t\t{HairGel} BD')
             if BodyLotionEntry.get()!='0':
-                textarea.insert(END,f'\nFace Cream\t\t\t{BodyLotionEntry.get()}\t\t\t{BodyLotion} BD')
+                textarea.insert(END,f'\nFace Cream\t\t{BodyLotionEntry.get()}\t\t\t{BodyLotion} BD')
 
             #Grocery item recept calculate and show
             if RiceEntry.get() != '0':
@@ -463,7 +470,8 @@ BillButton.grid(row=0,column=1,pady=15,padx=5)
 EmailButton=Button(buttonFrame,text='Email',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
 EmailButton.grid(row=0,column=2,pady=15,padx=5)
 #Print
-PrintButton=Button(buttonFrame,text='Print',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
+PrintButton=Button(buttonFrame,text='Print',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8,
+                   command=print_bill)
 PrintButton.grid(row=0,column=3,pady=15,padx=5)
 #Creat
 CreatButton=Button(buttonFrame,text='Creat',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
