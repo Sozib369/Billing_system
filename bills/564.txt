@@ -1,0 +1,20 @@
+		**Welcome Customer**
+
+Bill Number: 564
+
+Customer Name:Md sozib islam
+
+Customer Phone Number: 01755038101
+
+-------------------------------------------------------Product			Quantity			Price
+-------------------------------------------------------
+Face Wash			21			2100 BD
+While 			12			600 BD
+Sprite 			21			630 BD
+-------------------------------------------------------
+Cosmatic Tax				252.0 BD
+Grocery Tax				360.0 BD 
+Cold Drink Tax				315.0 BD
+
+Total Bill				4257.0 BD
+-------------------------------------------------------

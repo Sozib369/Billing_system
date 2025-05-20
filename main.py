@@ -6,11 +6,143 @@ from itertools import product
 from pickle import GLOBAL
 from string import whitespace
 from tkinter import*
+import random
+from tkinter import messagebox
+import random, os
 from turtledemo.nim import randomrow
 
+#Function part
 
+
+
+
+
+#input bill number then show recept
+def search_bill():
+    for i in os.listdir('bills/'):
+        if i.split('.')[0]==BillEntry.get():
+           f=open(f'bills/{i}','r')
+           textarea.delete(1.0,END)
+           for data in f:
+               textarea.insert(END,data)
+           f.close()
+           break
+    else:
+        messagebox.showerror('error','Invalid Bill Number')
+
+
+
+
+
+if not os.path.exists('bills'):
+    os.mkdir('bills')
+
+
+#Creat message save bill or not
+def save_bill():
+    global billnumber
+    result=messagebox.askyesno('Confirm','Do you Want to Save the bill?')
+    if result:
+        bill_content=textarea.get(1.0,END)
+        file=open(f'bills/{billnumber}.txt','w')
+        file.write(bill_content)
+        file.close()
+        messagebox.showinfo('Success',f'Bill Number {billnumber} is saved successfully ')
+        billnumber = random.randint(400, 1000)
+
+
+# Random bill number er jonne
+billnumber = random.randint(400, 1000)
 #functionality part
+
+#Calculate bill area
+def bill_area():
+    if nameEntry.get().strip() == '' or phoneEntry.get().strip() == '':
+        messagebox.showerror('Error', 'Customer Details Are Required')
+    elif (CosmaticEntry.get().strip() in ['', '0 BD']) and \
+         (GroceryPriceEntry.get().strip() in ['', '0 BD']) and \
+         (ColdDrinkPriceEntry.get().strip() in ['', '0 BD']):
+     messagebox.showerror('Error', 'কোন প্রোডাক্ট সিলেক্ট করা হয়নি । প্লিজ সিলেক্ট করুন')
+    else:
+        # Proceed to generate the bill (You can write bill generation logic here)
+
+            textarea.delete(1.0,END)
+
+            textarea.insert(END,'\t\t**Welcome Customer**\n')
+            textarea.insert(END,f'\nBill Number: {billnumber}\n')
+            textarea.insert(END,f'\nCustomer Name:{nameEntry.get()}\n')
+            textarea.insert(END,f'\nCustomer Phone Number: {phoneEntry.get()}\n')
+            textarea.insert(END,'\n-------------------------------------------------------')
+            textarea.insert(END,'Product\t\t\tQuantity\t\t\tPrice')
+            textarea.insert(END, '\n-------------------------------------------------------')
+
+            #cosmatic item show bill receipt
+            if BatchSopEntry.get()!='0':
+                textarea.insert(END,f'\nBat Soap\t\t\t{BatchSopEntry.get()}\t\t\t{soapPrice} BD')
+            if FaceCreamEntry.get()!='0':
+                textarea.insert(END,f'\nFace Cream\t\t\t{FaceCreamEntry.get()}\t\t\t{Facecream} BD')
+            if FaceWashEntry.get()!='0':
+                textarea.insert(END,f'\nFace Wash\t\t\t{FaceWashEntry.get()}\t\t\t{FaceWash} BD')
+            if HairSprayEntry.get()!='0':
+                textarea.insert(END,f'\nHair spary\t\t\t{HairSprayEntry.get()}\t\t\t{HairSpray} BD')
+            if HairGelEntry.get()!='0':
+                textarea.insert(END,f'\nHair Gel\t\t\t{HairGelEntry.get()}\t\t\t{HairGel} BD')
+            if BodyLotionEntry.get()!='0':
+                textarea.insert(END,f'\nFace Cream\t\t\t{BodyLotionEntry.get()}\t\t\t{BodyLotion} BD')
+
+            #Grocery item recept calculate and show
+            if RiceEntry.get() != '0':
+                textarea.insert(END, f'\nRice \t\t\t{RiceEntry.get()}\t\t\t{RicePrice} BD')
+            if OilEntry.get() != '0':
+                    textarea.insert(END, f'\nOil \t\t\t{OilEntry.get()}\t\t\t{ OilPrice} BD')
+            if DaalEntry.get() != '0':
+                textarea.insert(END, f'\nDaal \t\t\t{DaalEntry.get()}\t\t\t{DaalPrice} BD')
+            if WhealEntry.get() != '0':
+                textarea.insert(END, f'\nWhile \t\t\t{WhealEntry.get()}\t\t\t{WhealPrice} BD')
+            if SugerEntry.get() != '0':
+                textarea.insert(END, f'\nSugar \t\t\t{SugerEntry.get()}\t\t\t{ SugarPrice} BD')
+            if TeaEntry.get() != '0':
+                textarea.insert(END, f'\nTea \t\t\t{TeaEntry.get()}\t\t\t{ TeaPrice} BD')
+
+            #Cold Drinks recept and show calculate
+            if MaazaEntry.get() != '0':
+                textarea.insert(END, f'\nMaaza \t\t\t{MaazaEntry.get()}\t\t\t{MaazaPrice} BD')
+            if PepsiEntry.get() != '0':
+                    textarea.insert(END, f'\nPepsi \t\t\t{PepsiEntry.get()}\t\t\t{ pepsiprice} BD')
+            if SpriteEntry.get() != '0':
+                textarea.insert(END, f'\nSprite \t\t\t{SpriteEntry.get()}\t\t\t{spriteprice} BD')
+            if DewEntry.get() != '0':
+                textarea.insert(END, f'\nDew \t\t\t{DewEntry.get()}\t\t\t{dewprice} BD')
+            if FrootiEntry.get() != '0':
+                textarea.insert(END, f'\nfrooti \t\t\t{FrootiEntry.get()}\t\t\t{ frootiprice} BD')
+            if CoCaColaEntry.get() != '0':
+                textarea.insert(END, f'\nTea \t\t\t{CoCaColaEntry.get()}\t\t\t{ CocaColaprice} BD')
+
+            #Separate line
+            textarea.insert(END,'\n-------------------------------------------------------')
+
+            #All tax calculate and recep show
+            if CosmaticTaxPriceEntry.get()!='0.0 BD':
+                textarea.insert(END,f'\nCosmatic Tax\t\t\t\t{CosmaticTaxPriceEntry.get()}')
+            if GroceryTaxPriceEntry.get()!='0.0 BD':
+                textarea.insert(END,f'\nGrocery Tax\t\t\t\t{GroceryTaxPriceEntry.get()}')
+            if ColdDrinkTaxPriceEntry.get()!='0.0 BD':
+                textarea.insert(END,f'\nCold Drink Tax\t\t\t\t{ColdDrinkTaxPriceEntry.get()}')
+
+            #totall bill calculate recep
+            textarea.insert(END,f'\n\nTotal Bill\t\t\t\t{TotalBill} BD')
+            #Separate line
+            textarea.insert(END,'\n-------------------------------------------------------')
+            save_bill()
+
+
+#Total
 def total():
+    global soapPrice,Facecream,FaceWash,HairSpray,HairGel,BodyLotion
+    global RicePrice,  OilPrice,DaalPrice,WhealPrice,  SugarPrice,  TeaPrice
+    global MaazaPrice,pepsiprice,spriteprice,dewprice,frootiprice,CocaColaprice
+    global  TotalBill
+    #Cosmatic price calculation
     soapPrice=int(BatchSopEntry.get())*20
     Facecream=int(FaceCreamEntry.get())*50
     FaceWash=int(FaceWashEntry.get())*100
@@ -18,10 +150,48 @@ def total():
     HairGel=int(HairGelEntry.get())*80
     BodyLotion=int(BodyLotionEntry.get())*60
 
-    cosmaticprice= soapPrice + Facecream + FaceWash + HairSpray + HairGel + BodyLotion
-    CosmaticEntry.insert(0,cosmaticprice)
+    Totalcosmaticprice = soapPrice + Facecream + FaceWash + HairSpray + HairGel + BodyLotion
+    CosmaticEntry.delete(0,END)
+    CosmaticEntry.insert(0,f'{Totalcosmaticprice} BD')
+    cosmaticTax=Totalcosmaticprice * 0.12
+    CosmaticTaxPriceEntry.delete(0,END)
+    CosmaticTaxPriceEntry.insert(0,str(cosmaticTax)+ ' BD')
 
 
+
+    #Grocery price calculation
+    RicePrice=int(RiceEntry.get())*30
+    OilPrice=int(OilEntry.get())*100
+    DaalPrice=int(DaalEntry.get())*120
+    WhealPrice=int(WhealEntry.get())*50
+    SugarPrice=int(SugerEntry.get())*140
+    TeaPrice=int(TeaEntry.get())*80
+
+    TotalGroceryPrice = RicePrice+OilPrice+DaalPrice+WhealPrice+SugarPrice+TeaPrice
+    GroceryPriceEntry.delete(0,END)
+    GroceryPriceEntry.insert(0,f'{TotalGroceryPrice} BD ')
+    GroceryTax = TotalGroceryPrice * 0.6
+    GroceryTaxPriceEntry.delete(0, END)
+    GroceryTaxPriceEntry.insert(0, f'{GroceryTax} BD ')
+
+
+    #Cold Drinks price calculation
+    MaazaPrice=int(MaazaEntry.get())*30
+    pepsiprice=int(PepsiEntry.get())*20
+    spriteprice=int(SpriteEntry.get())*30
+    dewprice=int(DewEntry.get())*40
+    frootiprice=int(FrootiEntry.get())*50
+    CocaColaprice=int(CoCaColaEntry.get())*60
+
+    TotalColdDrinkPrice = MaazaPrice+pepsiprice+spriteprice+dewprice+frootiprice+CocaColaprice
+    ColdDrinkPriceEntry.delete(0,END)
+    ColdDrinkPriceEntry.insert(0,str(TotalColdDrinkPrice)+' BD')
+    ColdDrinksTax = TotalColdDrinkPrice * 0.5
+    ColdDrinkTaxPriceEntry.delete(0, END)
+    ColdDrinkTaxPriceEntry.insert(0, str(ColdDrinksTax) + ' BD')
+
+    #Total bill calculate
+    TotalBill = Totalcosmaticprice+TotalGroceryPrice+TotalColdDrinkPrice+cosmaticTax+GroceryTax+ColdDrinksTax
 
 #GUI PART
 root =Tk()
@@ -61,7 +231,8 @@ BillEntry=Entry(customer_details_frame,font=('arial',15),bd=8,width=15)
 BillEntry.grid(row=0,column=5,padx=20,pady=2)
 
 #Serch
-searchButton=Button(customer_details_frame, text='SEARCH',font=('arial',12,'bold'),border=8,width=10)
+searchButton=Button(customer_details_frame, text='SEARCH',font=('arial',12,'bold'),border=8,width=10
+                   ,command=search_bill)
 searchButton.grid(row=0,column=6,padx=20,pady=3)
 
 #products frame
@@ -221,7 +392,7 @@ billareaLabel.pack(fill=X)
 
 Scrollbar=Scrollbar(billFrame,orient=VERTICAL)
 Scrollbar.pack(side=RIGHT,fill=Y)
-textarea=Text(billFrame,height=17,width=53,yscrollcommand=Scrollbar.set)
+textarea=Text(billFrame,height=17,width=55,yscrollcommand=Scrollbar.set)
 textarea.pack()
 Scrollbar.config(command=textarea.yview())
 
@@ -261,11 +432,11 @@ CosmaticTaxPriceEntry=Entry(BillManuFrame,font=('time new roman',14,'bold'),widt
 CosmaticTaxPriceEntry.grid(row=0,column=3,pady=4,padx=17,sticky='w')
 
 #Grcery Tax
-CosmaticTaxPriceLabel=Label(BillManuFrame,text='Cosmatic Tax',font=('times new roman',14,'bold'),bg='gray20',fg='white')
-CosmaticTaxPriceLabel.grid(row=1,column=2,pady=4,padx=17,sticky='w')
+GroceryTaxPriceLabel=Label(BillManuFrame,text='Grocery Tax',font=('times new roman',14,'bold'),bg='gray20',fg='white')
+GroceryTaxPriceLabel.grid(row=1,column=2,pady=4,padx=17,sticky='w')
 
-CosmaticTaxPriceEntry=Entry(BillManuFrame,font=('time new roman',14,'bold'),width=10,bd=5)
-CosmaticTaxPriceEntry.grid(row=1,column=3,pady=4,padx=17,sticky='w')
+GroceryTaxPriceEntry=Entry(BillManuFrame,font=('time new roman',14,'bold'),width=10,bd=5)
+GroceryTaxPriceEntry.grid(row=1,column=3,pady=4,padx=17,sticky='w')
 
 #ColdDrink Tax
 ColdDrinkTaxPriceLabel=Label(BillManuFrame,text='Cold Drink Tax',font=('times new roman',14,'bold'),bg='gray20',fg='white')
@@ -284,12 +455,13 @@ TotalButton=Button(buttonFrame,text='Total',font=('arial',15,'bold'),bg='gray20'
                     width=8,command=total)
 TotalButton.grid(row=0,column=0,pady=15,padx=5)
 
-#Email
-EmailButton=Button(buttonFrame,text='Email',font=('Email',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
-EmailButton.grid(row=0,column=1,pady=15,padx=5)
 #Bill
-BillButton=Button(buttonFrame,text='Bill',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
-BillButton.grid(row=0,column=2,pady=15,padx=5)
+BillButton=Button(buttonFrame,text='Bill',font=('Bill',15,'bold'),bg='gray20',fg='white',bd=5
+                  ,width=8,command=bill_area)
+BillButton.grid(row=0,column=1,pady=15,padx=5)
+#Email
+EmailButton=Button(buttonFrame,text='Email',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
+EmailButton.grid(row=0,column=2,pady=15,padx=5)
 #Print
 PrintButton=Button(buttonFrame,text='Print',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
 PrintButton.grid(row=0,column=3,pady=15,padx=5)
