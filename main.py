@@ -8,11 +8,158 @@ from string import whitespace
 from tkinter import*
 import random
 from tkinter import messagebox
-import random, os,tempfile
+import random, os,tempfile,smtplib
 from turtledemo.nim import randomrow
 
 #Function part
+def clear_():
+    BatchSopEntry.delete(0,END)
+    FaceCreamEntry.delete(0, END)
+    FaceWashEntry.delete(0, END)
+    HairSprayEntry.delete(0, END)
+    HairGelEntry.delete(0, END)
+    BodyLotionEntry.delete(0, END)
 
+    # grocery empty clear function
+    RiceEntry.delete(0, END)
+    OilEntry.delete(0, END)
+    DaalEntry.delete(0, END)
+    WhealEntry.delete(0, END)
+    SugerEntry.delete(0, END)
+    TeaEntry.delete(0, END)
+
+    # Cold Drinks
+    MaazaEntry.delete(0, END)
+    PepsiEntry.delete(0, END)
+    SpriteEntry.delete(0, END)
+    DewEntry.delete(0, END)
+    FrootiEntry.delete(0, END)
+    CoCaColaEntry.delete(0, END)
+
+    BatchSopEntry.insert(0,0)
+    FaceCreamEntry.insert(0, 0)
+    FaceWashEntry.insert(0, 0)
+    HairSprayEntry.insert(0, 0)
+    HairGelEntry.insert(0, 0)
+    BodyLotionEntry.insert(0, 0)
+
+    # grocery empty clear function
+    RiceEntry.insert(0, 0)
+    OilEntry.insert(0, 0)
+    DaalEntry.insert(0, 0)
+    WhealEntry.insert(0, 0)
+    SugerEntry.insert(0, 0)
+    TeaEntry.insert(0, 0)
+
+    # Cold Drinks
+    MaazaEntry.insert(0, 0)
+    PepsiEntry.insert(0, 0)
+    SpriteEntry.insert(0, 0)
+    DewEntry.insert(0, 0)
+    FrootiEntry.insert(0, 0)
+    CoCaColaEntry.insert(0, 0)
+
+    #cosmatic,grocery, and coldDrink price clear function
+    CosmaticEntry.delete(0,END)
+    GroceryPriceEntry.delete(0, END)
+    ColdDrinkTaxPriceEntry.delete(0, END)
+
+    #cosmatic,grocery, and coldDrink tax price clear function
+    CosmaticTaxPriceEntry.delete(0,END)
+    GroceryTaxPriceEntry.delete(0, END)
+    ColdDrinkPriceEntry.delete(0, END)
+
+    #Name,phone,billingNumber,BillArea clear function
+
+    nameEntry.delete(0,END)
+    phoneEntry.delete(0, END)
+    BillEntry.delete(0, END)
+
+    textarea.delete(1.0,END)
+
+
+
+
+#Email button feature program
+def send_email():
+
+
+    #end gmail function
+    def Send_gmail():
+        try:
+            ob=smtplib.SMTP('smtp.gmail.com',587) # smtp.gmail.com 587 This is the port number.
+            ob.starttls()
+            ob.login(senderEntry.get(),passwordEntry.get())
+            message=email_textArea.get(1.0,END)
+            ob.sendmail(senderEntry.get(),reciverEntry.get(),message)
+            ob.quit()
+            messagebox.showinfo('Success','Bill is successfully sent',parent=root1)
+            root1.destroy()
+        except:
+            messagebox.showerror('Error','Something went wrong, Please try again ',parent=root1)
+
+
+
+    if textarea.get(1.0,END)=='\n':
+        messagebox.showerror('Error','Bill is empty')
+    else:
+        root1 = Toplevel()
+        root1.grab_set()
+        root1.title('send gmail')
+        root1.config(bg='gray20')
+        root1.resizable(0,0)
+
+        #sender frame
+        senderFrame=LabelFrame(root1,text='SENDER',font=('arial',16,'bold'),bd=6,bg='gray20',fg='white')
+        senderFrame.grid(row=0,column=0,padx=40,pady=20)
+
+        #sender name and entry
+        senderLabel=Label(senderFrame,text="Sender's Email",font=('arial',14,'bold'),bd=6,bg='gray20',fg='white')
+        senderLabel.grid(row=0,column=0,padx=10,pady=8)
+
+        senderEntry=Entry(senderFrame,font=('arial',14,'bold'),bd=2,width=23,relief=RIDGE)
+        senderEntry.grid(row=0,column=1,padx=10,pady=8)
+
+        #password name and entry
+        passwordLabel = Label(senderFrame, text="Password", font=('arial', 14, 'bold'), bd=6, bg='gray20', fg='white')
+        passwordLabel.grid(row=1, column=0, padx=10, pady=8)
+
+        passwordEntry = Entry(senderFrame, font=('arial', 14, 'bold'), bd=2, width=23, relief=RIDGE,show='*')#show password *
+        passwordEntry.grid(row=1, column=1, padx=10, pady=8)
+
+        #recept frame
+        recipientFrame = LabelFrame(root1, text='RECIPIENT', font=('arial', 16, 'bold'), bd=6, bg='gray20', fg='white')
+        recipientFrame.grid(row=1, column=0, padx=40, pady=20)
+
+        #Email address name and entry
+        reciverLabel = Label(recipientFrame, text="Email Address", font=('arial', 14, 'bold'), bd=6, bg='gray20', fg='white')
+        reciverLabel.grid(row=0, column=0, padx=10, pady=8)
+
+        reciverEntry = Entry(recipientFrame, font=('arial', 14, 'bold'), bd=2, width=23, relief=RIDGE)
+        reciverEntry.grid(row=0, column=1, padx=10, pady=8)
+
+        #message name
+        messageLabel = Label(recipientFrame, text="Message", font=('arial', 14, 'bold'), bd=6, bg='gray20', fg='white')
+        messageLabel.grid(row=1, column=0, padx=10, pady=8)
+
+        #email text area
+        email_textArea=Text(recipientFrame, font=('arial', 14, 'bold'),bd=2,relief=SUNKEN,
+                            width=42,height=11)
+        email_textArea.grid(row=2,column=0,columnspan=2)
+        email_textArea.delete(1.0,END)
+
+        #Insert text ariea
+        email_textArea.insert(END,textarea.get(1.0,END).replace('=','')
+                              .replace('-','').replace('\t\t\t','\t\t'))
+
+        sendButton=Button(root1,text='SEND', font=('arial', 16, 'bold'),width=15,command=Send_gmail)
+        sendButton.grid(row=2,column=0,pady=20)
+
+
+        root1.mainloop()
+
+
+#bill recept print
 def print_bill():
     if textarea.get(1.0,END)=='\n':
         messagebox.showerror('Error','Bill is empty')
@@ -45,7 +192,7 @@ if not os.path.exists('bills'):
     os.mkdir('bills')
 
 
-#Creat message save bill or not
+#recipientFrame message save bill or not
 def save_bill():
     global billnumber
     result=messagebox.askyesno('Confirm','Do you Want to Save the bill?')
@@ -85,23 +232,23 @@ def bill_area():
 
             #cosmatic item show bill receipt
             if BatchSopEntry.get()!='0':
-                textarea.insert(END,f'\nBat Soap\t\t{BatchSopEntry.get()}\t\t\t{soapPrice} BD')
+                textarea.insert(END,f'\nBat Soap  \t\t\t{BatchSopEntry.get()}\t\t\t{soapPrice} BD')
             if FaceCreamEntry.get()!='0':
-                textarea.insert(END,f'\nFace Cream\t\t{FaceCreamEntry.get()}\t\t\t{Facecream} BD')
+                textarea.insert(END,f'\nFace Cream\t\t\t{FaceCreamEntry.get()}\t\t\t{Facecream} BD')
             if FaceWashEntry.get()!='0':
-                textarea.insert(END,f'\nFace Wash\t\t{FaceWashEntry.get()}\t\t\t{FaceWash} BD')
+                textarea.insert(END,f'\nFace Wash \t\t\t{FaceWashEntry.get()}\t\t\t{FaceWash} BD')
             if HairSprayEntry.get()!='0':
-                textarea.insert(END,f'\nHair spary\t\t{HairSprayEntry.get()}\t\t\t{HairSpray} BD')
+                textarea.insert(END,f'\nHair spary\t\t\t{HairSprayEntry.get()}\t\t\t{HairSpray} BD')
             if HairGelEntry.get()!='0':
-                textarea.insert(END,f'\nHair Gel\t\t{HairGelEntry.get()}\t\t\t{HairGel} BD')
+                textarea.insert(END,f'\nHair Gel  \t\t\t{HairGelEntry.get()}\t\t\t{HairGel} BD')
             if BodyLotionEntry.get()!='0':
-                textarea.insert(END,f'\nFace Cream\t\t{BodyLotionEntry.get()}\t\t\t{BodyLotion} BD')
+                textarea.insert(END,f'\nFace Cream\t\t\t{BodyLotionEntry.get()}\t\t\t{BodyLotion} BD')
 
             #Grocery item recept calculate and show
             if RiceEntry.get() != '0':
                 textarea.insert(END, f'\nRice \t\t\t{RiceEntry.get()}\t\t\t{RicePrice} BD')
             if OilEntry.get() != '0':
-                    textarea.insert(END, f'\nOil \t\t\t{OilEntry.get()}\t\t\t{ OilPrice} BD')
+                textarea.insert(END, f'\nOil \t\t\t{OilEntry.get()}\t\t\t{ OilPrice} BD')
             if DaalEntry.get() != '0':
                 textarea.insert(END, f'\nDaal \t\t\t{DaalEntry.get()}\t\t\t{DaalPrice} BD')
             if WhealEntry.get() != '0':
@@ -207,7 +354,7 @@ root.geometry('1270x685')
 root.iconbitmap('Icon.ico')
 
 #Heading Label
-headingLabel = Label(root, text='Grocery Billing System created by SOZIB', font=('times new roman',25,'bold')
+headingLabel = Label(root, text='Grocery Billing System recipientFrameed by SOZIB', font=('times new roman',25,'bold')
                      ,bg='gray20',fg='gold',bd=12,relief='groove')
 headingLabel.pack(fill=X,pady=2)
 
@@ -397,6 +544,7 @@ billFrame.grid(row=0,column=3,padx=7)
 billareaLabel=Label(billFrame,text='Bill Area',font=('times new roman',15,'bold'),bd=7,relief=GROOVE)
 billareaLabel.pack(fill=X)
 
+#scrollbar section
 Scrollbar=Scrollbar(billFrame,orient=VERTICAL)
 Scrollbar.pack(side=RIGHT,fill=Y)
 textarea=Text(billFrame,height=17,width=55,yscrollcommand=Scrollbar.set)
@@ -457,23 +605,24 @@ ColdDrinkTaxPriceEntry.grid(row=2,column=3,pady=4,padx=17,sticky='w')
 buttonFrame=Frame(BillManuFrame,bd=8,relief=GROOVE)
 buttonFrame.grid(row=0,column=4,rowspan=3)
 
-#Tootal
+#Tootal button
 TotalButton=Button(buttonFrame,text='Total',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,
                     width=8,command=total)
 TotalButton.grid(row=0,column=0,pady=15,padx=5)
 
-#Bill
+#Bill button
 BillButton=Button(buttonFrame,text='Bill',font=('Bill',15,'bold'),bg='gray20',fg='white',bd=5
                   ,width=8,command=bill_area)
 BillButton.grid(row=0,column=1,pady=15,padx=5)
-#Email
-EmailButton=Button(buttonFrame,text='Email',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
+#Email button
+EmailButton=Button(buttonFrame,text='Email',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8,command=send_email)
 EmailButton.grid(row=0,column=2,pady=15,padx=5)
-#Print
+#Print button
 PrintButton=Button(buttonFrame,text='Print',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8,
                    command=print_bill)
 PrintButton.grid(row=0,column=3,pady=15,padx=5)
-#Creat
-CreatButton=Button(buttonFrame,text='Creat',font=('arial',15,'bold'),bg='gray20',fg='white',bd=5,width=8)
-CreatButton.grid(row=0,column=4,pady=15,padx=5,)
+#clear button
+clearFrameButton=Button(buttonFrame,text='Clear',font=('arial',15,'bold'),bg='gray20',fg='white',
+                        bd=5,width=8,command=clear_)
+clearFrameButton.grid(row=0,column=4,pady=15,padx=5,)
 root.mainloop()
